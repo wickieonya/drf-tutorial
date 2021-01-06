@@ -14,7 +14,7 @@ class Snippet(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100, blank=True, default="")
     code = models.TextField()
-    linemos = models.BooleanField(default=False)
+    linenos = models.BooleanField(default=False)
     language = models.CharField(
         max_length=100, default="python", choices=LANGUAGE_CHOICES
     )
@@ -27,9 +27,9 @@ class Snippet(models.Model):
         User the 'pygments' library to create a highlighted HTML representation of the code snippet.
         """
         lexer = get_lexer_by_name(self.language)
-        linemos = 'table' if self.linemos else False
+        linenos = 'table' if self.linenos else False
         options = {'title': self.title} if self.title else {}
-        formatter = HtmlFormatter(style=self.style, linemos=linemos, full=True, **options)
+        formatter = HtmlFormatter(style=self.style, linenos=linenos, full=True, **options)
         self.highlighted = highlight(self.code, lexer, formatter)
         super(Snippet, self).save(*args, **kwargs)
 
